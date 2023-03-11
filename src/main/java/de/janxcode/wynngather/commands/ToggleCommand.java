@@ -2,7 +2,7 @@ package de.janxcode.wynngather.commands;
 
 import de.janxcode.wynngather.WynnGather;
 import de.janxcode.wynngather.handlers.ArmourStandHandler;
-import de.janxcode.wynngather.inforenderer.DrawBoundingBox;
+import de.janxcode.wynngather.inforenderer.DrawNodeInfo;
 import de.janxcode.wynngather.inforenderer.DrawInfoPanel;
 import de.janxcode.wynngather.inforenderer.Node;
 import net.minecraft.command.CommandBase;
@@ -14,11 +14,12 @@ import net.minecraftforge.common.MinecraftForge;
 import java.util.List;
 
 public class ToggleCommand extends CommandBase {
-    private final DrawBoundingBox box = new DrawBoundingBox();
+    private final DrawNodeInfo box = new DrawNodeInfo();
     private final ArmourStandHandler handler = new ArmourStandHandler();
-    private final DrawInfoPanel info = new DrawInfoPanel();
+    private final DrawInfoPanel info = DrawInfoPanel.getPanel();
     private final List<Node> nodes = WynnGather.NODES;
     private boolean toggled = false;
+
 
     @Override
     public String getName() {
@@ -69,7 +70,7 @@ public class ToggleCommand extends CommandBase {
         MinecraftForge.EVENT_BUS.register(box);
         MinecraftForge.EVENT_BUS.register(handler);
         MinecraftForge.EVENT_BUS.register(info);
-        info.init();
+        info.startTime = System.currentTimeMillis();
         nodes.clear();
     }
 }
