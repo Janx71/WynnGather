@@ -15,4 +15,5 @@ This Project will help you Gathering by giving you useful information as an info
 * Visibility of nodes increased dramatically.
 
 ## Project Demo
-<a href="https://youtu.be/G82cfowicwQ" target="_blank">
+<a href="https://youtu.be/G82cfowicwQ">
+
