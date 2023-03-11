@@ -1,6 +1,6 @@
-#Simple Wynncraft Gathering Helper
+# Simple Wynncraft Gathering Helper
 
-##A Forge 1.12.2 Mod Made for Making Wynncraft Gathering easier
+## A Forge 1.12.2 Mod Made for Making Wynncraft Gathering easier
 
 This Project will help you Gathering by giving you useful information as an infopanel on your screen as by highlighting specific nodes to give you realytime information about xp gain, node regeneration time and more
 
