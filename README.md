@@ -16,4 +16,6 @@ This Project will help you Gathering by giving you useful information as an info
 
 ## How to use the mod
 * Download <a href="https://github.com/Janx71/WynnGather/releases/download/Wynncraft/Wynngather.jar" target="_blank">WynnGather Here</a> or in releases
+* Install like a normal forge mod for Minecraft 1.12.2
+* use the /toggle command to enable/disable
 
