@@ -85,7 +85,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "wynngather",
+            "Specification-Title": "WynnGather",
             "Specification-Vendor": "de.janxcode.wynngather",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
