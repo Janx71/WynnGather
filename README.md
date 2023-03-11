@@ -18,7 +18,7 @@ This Project will help you To gather by giving you useful information as an info
 * Download <a href="https://github.com/Janx71/WynnGather/releases/download/Wynncraft/Wynngather.jar" target="_blank">WynnGather Here</a> or in <a href="https://github.com/Janx71/WynnGather/releases" target="_blank">Releases</a>
 * Install like a normal forge mod for Minecraft 1.12.2
 * use the /toggle command to enable/disable
-* 
+
 # Known Bugs
 * Woodcutting is still a complete mess. Some nodes are not at the right place, some don't show up at all, some are double.
 * Wynncraft sometimes doesn't load a crucial element, which can lead to some nodes not being rendered
