@@ -14,6 +14,6 @@ This Project will help you Gathering by giving you useful information as an info
 * Nodes will change color to indicate regeneration time.
 * Visibility of nodes increased dramatically.
 
-## Project Demo
-<a href="https://youtu.be/G82cfowicwQ">
+## How to use the mod
+* Download 
 
