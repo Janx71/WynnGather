@@ -1,5 +1,6 @@
 package de.janxcode.wynngather.inforenderer;
 
+import de.janxcode.wynngather.WynnGather;
 import de.janxcode.wynngather.handlers.NodeMinedEvent;
 import de.janxcode.wynngather.utils.ModConfig;
 import de.janxcode.wynngather.utils.RenderUtils;
@@ -47,6 +48,9 @@ public  class DrawInfoPanel {
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text e){
+
+        if(WynnGather.GUI) return;
+
         long seconds = (System.currentTimeMillis() - startTime) / 1000;
 
         //Help its 5am
