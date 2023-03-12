@@ -27,6 +27,8 @@ public class ToggleMod {
         MinecraftForge.EVENT_BUS.unregister(box);
         MinecraftForge.EVENT_BUS.unregister(handler);
         MinecraftForge.EVENT_BUS.unregister(info);
+
+        info.nodesMined = 0;
         nodes.clear();
     }
 
@@ -34,7 +36,9 @@ public class ToggleMod {
         MinecraftForge.EVENT_BUS.register(box);
         MinecraftForge.EVENT_BUS.register(handler);
         MinecraftForge.EVENT_BUS.register(info);
+
         info.startTime = System.currentTimeMillis();
+        info.nodesMined = 0;
         nodes.clear();
     }
 }
