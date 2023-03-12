@@ -1,6 +1,11 @@
 package de.janxcode.wynngather.utils;
 
 import de.janxcode.wynngather.handlers.NodeMinedEvent;
+import de.janxcode.wynngather.inforenderer.Node;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.text.NumberFormat;
@@ -9,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
-    public static void parseXpInfo(String input) {
+    public static void parseXpInfo(String input, Node node) {
         int xp = 0;
         int nexLevel = 0;
 
@@ -41,7 +46,7 @@ public class Utils {
             nexLevel = Integer.parseInt(nexLevelMatcher.group(1));
         }
 
-        MinecraftForge.EVENT_BUS.post(new NodeMinedEvent(xp, nexLevel));
+        MinecraftForge.EVENT_BUS.post(new NodeMinedEvent(xp, nexLevel, node));
     }
 
     public static String formatValue(long value) {
@@ -71,5 +76,15 @@ public class Utils {
 
         // Format the result as a String with the appropriate suffix
         return nf.format(result) + suffix;
+    }
+
+    public static AxisAlignedBB getAabb(int radius){
+        Minecraft mc = Minecraft.getMinecraft();
+
+        double x = mc.player.posX;
+        double y = mc.player.posY;
+        double z = mc.player.posZ;
+
+        return new AxisAlignedBB(x - radius, y - radius, z - radius, x + radius, y + radius, z+ radius);
     }
 }

@@ -17,4 +17,6 @@ public class ModConfig {
     @Config.Comment("Left Corner of the text info")
     public static int guiPosX = 40;
     public static int guiPosY = 60;
+
+    public static int renderDistance = 50;
 }

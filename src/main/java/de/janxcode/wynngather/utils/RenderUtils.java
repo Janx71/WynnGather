@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -16,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+//Got some of this code from a forum of that I forgot the name. Sure do hope it's not licensed xD
 public class RenderUtils {
     public static void draw3DString(BlockPos pos, String text, int colour, float partialTicks) {
         Minecraft mc = Minecraft.getMinecraft();
@@ -41,7 +41,7 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
-    public static void drawFilled3DBox(BlockPos pos, int colourInt, boolean translucent, boolean depth, float partialTicks) {
+    public static void drawBox(BlockPos pos, int colourInt, float partialTicks) {
         AxisAlignedBB aabb = new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
         Entity render = Minecraft.getMinecraft().getRenderViewEntity();
@@ -60,12 +60,12 @@ public class RenderUtils {
         GlStateManager.enableAlpha();
         GlStateManager.enableBlend();
         GlStateManager.disableCull();
-        GlStateManager.tryBlendFuncSeparate(770, translucent ? 1 : 771, 1, 0);
-        if (!depth) {
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
-            GlStateManager.depthMask(false);
-        }
+        GlStateManager.tryBlendFuncSeparate(770, 1, 1, 0);
         GlStateManager.color(colour.getRed() / 255f, colour.getGreen() / 255f, colour.getBlue() / 255f, 70 / 255f);
+
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GlStateManager.depthMask(false);
+
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         // Bottom
         worldRenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
@@ -100,10 +100,10 @@ public class RenderUtils {
         Tessellator.getInstance().draw();
 
         GlStateManager.translate(realX, realY, realZ);
-        if (!depth) {
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            GlStateManager.depthMask(true);
-        }
+
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GlStateManager.depthMask(true);
+
         GlStateManager.enableCull();
         GlStateManager.disableAlpha();
         GlStateManager.disableBlend();
