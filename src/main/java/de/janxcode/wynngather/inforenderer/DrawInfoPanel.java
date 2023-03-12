@@ -18,7 +18,7 @@ public  class DrawInfoPanel {
     public long startTime;
     public int nodesMined;
     private int nextLevel;
-    private int xp;
+    public int xp;
     private String type = "" + TextFormatting.RED + TextFormatting.BOLD + "Not Set";
     private String progress = "";
 
