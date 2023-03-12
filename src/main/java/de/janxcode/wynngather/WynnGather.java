@@ -23,7 +23,7 @@ public class WynnGather
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        //
+        //Test
         ClientCommandHandler.instance.registerCommand(new ToggleCommand());
         ClientCommandHandler.instance.registerCommand(new ConfigCommand());
     }
