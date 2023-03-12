@@ -11,7 +11,5 @@ This Project will help you Gathering by giving you useful information as an info
 * Shows the percentage of xp missing for your next level.
 * Shows how much gathering xp you make per hour.
 * Shows the progress of you current node while mining.
-
-
 * Nodes will change color to indicate regeneration time.
 * Visibility of nodes increased dramatically.
