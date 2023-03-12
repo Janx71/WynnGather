@@ -13,7 +13,7 @@ This Project will help you To gather by giving you useful information as an info
 * Shows the progress of your current node while mining.
 * Nodes will change color to indicate regeneration time.
 * Visibility of nodes increased dramatically.
-* 
+
 # How to use the mod
 * Download <a href="https://github.com/Janx71/WynnGather/releases/download/Wynncraft/Wynngather.jar" target="_blank">WynnGather Here</a> or in <a href="https://github.com/Janx71/WynnGather/releases" target="_blank">Releases</a>
 * Install like a normal forge mod for Minecraft 1.12.2
@@ -23,8 +23,11 @@ This Project will help you To gather by giving you useful information as an info
 * Woodcutting is still a complete mess. Some nodes are not at the right place, some don't show up at all, some are double.
 * Wynncraft sometimes doesn't load a crucial element, which can lead to some nodes not being rendered
 * Changing profession will not reset XP/h and other stats
+* Double gathering speed still breraks everything progress related
  
 # In Progress
 * Info for T3 Materials
 * Info for Tool durability
 * GUI for config access
+* Ability to only show selected Info
+
