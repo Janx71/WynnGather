@@ -15,7 +15,7 @@ public  class DrawInfoPanel {
     private final Minecraft mc = Minecraft.getMinecraft();
     FontRenderer renderer = mc.fontRenderer;
     public long startTime;
-    private int nodesMined;
+    public int nodesMined;
     private int nextLevel;
     private int xp;
     private String type = "" + TextFormatting.RED + TextFormatting.BOLD + "Not Set";
