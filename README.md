@@ -15,5 +15,5 @@ This Project will help you Gathering by giving you useful information as an info
 * Visibility of nodes increased dramatically.
 
 ## How to use the mod
-* Download 
+* Download <a href="https://github.com/Janx71/WynnGather/releases/download/Wynncraft/Wynngather.jar">
 
