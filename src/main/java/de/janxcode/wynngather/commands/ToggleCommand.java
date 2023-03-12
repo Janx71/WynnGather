@@ -1,26 +1,13 @@
 package de.janxcode.wynngather.commands;
 
-import de.janxcode.wynngather.WynnGather;
-import de.janxcode.wynngather.handlers.ArmourStandHandler;
-import de.janxcode.wynngather.inforenderer.DrawNodeInfo;
-import de.janxcode.wynngather.inforenderer.DrawInfoPanel;
-import de.janxcode.wynngather.inforenderer.Node;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.MinecraftForge;
-
-import java.util.List;
 
 public class ToggleCommand extends CommandBase {
-    private final DrawNodeInfo box = new DrawNodeInfo();
-    private final ArmourStandHandler handler = new ArmourStandHandler();
-    private final DrawInfoPanel info = DrawInfoPanel.getPanel();
-    private final List<Node> nodes = WynnGather.NODES;
-    private boolean toggled = false;
 
-
+    private final ToggleMod mod = new ToggleMod();
     @Override
     public String getName() {
         return "toggle";
@@ -39,38 +26,19 @@ public class ToggleCommand extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if(args.length == 0) {
-            if (toggled){
-                unregister();
-            } else {
-                register();
-            }
-            toggled = !toggled;
-            return;
+            mod.toggle();
         }
 
         switch (args[0]){
             case "start":
-                register();
+                mod.register();
                 break;
 
             case "stop":
-                unregister();
+                mod.unregister();
                 break;
         }
     }
 
-    private void unregister(){
-        MinecraftForge.EVENT_BUS.unregister(box);
-        MinecraftForge.EVENT_BUS.unregister(handler);
-        MinecraftForge.EVENT_BUS.unregister(info);
-        nodes.clear();
-    }
 
-    private void register(){
-        MinecraftForge.EVENT_BUS.register(box);
-        MinecraftForge.EVENT_BUS.register(handler);
-        MinecraftForge.EVENT_BUS.register(info);
-        info.startTime = System.currentTimeMillis();
-        nodes.clear();
-    }
 }
