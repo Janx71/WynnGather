@@ -2,6 +2,7 @@ package de.janxcode.wynngather.handlers;
 
 import de.janxcode.wynngather.WynnGather;
 import de.janxcode.wynngather.inforenderer.DrawInfoPanel;
+import de.janxcode.wynngather.inforenderer.Info;
 import de.janxcode.wynngather.inforenderer.Node;
 import de.janxcode.wynngather.inforenderer.NodeType;
 import de.janxcode.wynngather.utils.HorizontalPos;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class ArmourStandHandler {
     private final Minecraft mc = Minecraft.getMinecraft();
-    private final DrawInfoPanel infoPanel = DrawInfoPanel.getPanel();
+    private final Info info = Info.getInstance();
     private final List<Node> nodes = WynnGather.NODES;
     private int mineTicks = 0;
 
@@ -74,7 +75,7 @@ public class ArmourStandHandler {
         //Sets the progress Strings for the current node and the info tab
         if(!node.isMined()){
             node.setMiningProgress(nbt.getString("CustomName"));
-            infoPanel.setProgress(nbt.getString("CustomName"));
+            info.setProgress(nbt.getString("CustomName"));
         }
     }
 
@@ -96,7 +97,7 @@ public class ArmourStandHandler {
 
         node.setMined();
         node.setMiningProgress("");
-        infoPanel.setProgress("");
+        info.setProgress("");
         return 0;
     }
 }

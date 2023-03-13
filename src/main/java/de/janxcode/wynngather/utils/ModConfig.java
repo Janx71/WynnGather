@@ -19,4 +19,18 @@ public class ModConfig {
     public static int guiPosY = 60;
 
     public static int renderDistance = 50;
+
+    public static String[] infoLines = {
+            "{YELLOW}Resource type: {AQUA}{BOLD}{type}",
+            "{YELLOW}Time spent: {AQUA}{BOLD}{time}",
+            "{YELLOW}Nodes mined: {AQUA}{BOLD}{nodesMined}",
+            "{YELLOW}Nodes per minute: {AQUA}{BOLD}{nodesPerMinute}",
+            "{YELLOW}Percentage to next Level: {AQUA}{BOLD}{nextLevel}%",
+            "{YELLOW}XP per hour: {AQUA}{BOLD}{xpPerHour}",
+            "{progress}",
+            "",
+            "",
+            "",
+            ""
+    };
 }

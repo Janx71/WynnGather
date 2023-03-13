@@ -1,5 +1,6 @@
 package de.janxcode.wynngather.commands;
 
+import de.janxcode.wynngather.gui.InfoLineGui;
 import de.janxcode.wynngather.gui.ModMenuGui;
 import de.janxcode.wynngather.utils.DelayedTaskFrames;
 import net.minecraft.client.Minecraft;
@@ -44,6 +45,10 @@ public class ToggleCommand extends CommandBase {
 
             case "pos":
                 new DelayedTaskFrames((() -> Minecraft.getMinecraft().displayGuiScreen(new ModMenuGui())), 1);
+                break;
+
+            case "menu":
+                new DelayedTaskFrames((() -> Minecraft.getMinecraft().displayGuiScreen(new InfoLineGui())), 1);
                 break;
         }
     }

@@ -2,6 +2,7 @@ package de.janxcode.wynngather;
 
 import de.janxcode.wynngather.commands.ToggleCommand;
 import de.janxcode.wynngather.inforenderer.Node;
+import de.janxcode.wynngather.utils.SessionLogin;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
