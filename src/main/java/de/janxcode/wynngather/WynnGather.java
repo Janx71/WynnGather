@@ -1,6 +1,5 @@
 package de.janxcode.wynngather;
 
-import de.janxcode.wynngather.commands.ConfigCommand;
 import de.janxcode.wynngather.commands.ToggleCommand;
 import de.janxcode.wynngather.inforenderer.Node;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -23,8 +22,6 @@ public class WynnGather
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        //Test
         ClientCommandHandler.instance.registerCommand(new ToggleCommand());
-        ClientCommandHandler.instance.registerCommand(new ConfigCommand());
     }
 }
