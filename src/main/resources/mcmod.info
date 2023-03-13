@@ -3,7 +3,7 @@
   "modid": "de.janxcode.wynngather",
   "name": "Wynn Gather",
   "description": "Gathering helper for Wynncraft",
-  "version": "1.1",
+  "version": "1.0",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
