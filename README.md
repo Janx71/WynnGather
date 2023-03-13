@@ -15,7 +15,7 @@ This Project will help you To gather by giving you useful information as an info
 * Visibility of nodes increased dramatically.
 
 # How to use the mod
-* Download <a href="https://github.com/Janx71/WynnGather/releases/download/Wynncraft/wynngather-1.1.jar" target="_blank">WynnGather Here</a> or in <a href="https://github.com/Janx71/WynnGather/releases" target="_blank">Releases</a>
+* Download <a href="https://github.com/Janx71/WynnGather/releases/download/v1.0/Wynngather-1.0.jar" target="_blank">WynnGather Here</a> or in <a href="https://github.com/Janx71/WynnGather/releases" target="_blank">Releases</a>
 * Install like a normal forge mod for Minecraft 1.12.2
 * use the /toggle command to enable/disable
 
