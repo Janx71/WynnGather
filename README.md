@@ -31,3 +31,6 @@ This Project will help you To gather by giving you useful information as an info
 * Info for Tool durability
 * Fix woodcutting
 
+# Buy me a coffee
+<a href="https://www.buymeacoffee.com/janx" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
