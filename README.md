@@ -17,7 +17,8 @@ This Project will help you To gather by giving you useful information as an info
 # How to use the mod
 * Download <a href="https://github.com/Janx71/WynnGather/releases/download/v1.0/Wynngather-1.0.jar" target="_blank">WynnGather Here</a> or in <a href="https://github.com/Janx71/WynnGather/releases" target="_blank">Releases</a>
 * Install like a normal forge mod for Minecraft 1.12.2
-* use the /toggle command to enable/disable
+* use the /gather command to enable/disable. /gather pos to change the position of the info panel.
+* Look <a href="https://github.com/Janx71/WynnGather/wiki/The-info-line-system" target="_blank">Here</a> to customise your info lines.
 
 # Known Bugs
 * Woodcutting is still a complete mess. Some nodes are not at the right place, some don't show up at all, some are double.
