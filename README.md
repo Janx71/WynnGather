@@ -24,7 +24,7 @@ This Project will help you To gather by giving you useful information as an info
 * Woodcutting is still a complete mess. Some nodes are not at the right place, some don't show up at all, some are double.
 * Wynncraft sometimes doesn't load a crucial element, which can lead to some nodes not being rendered
 * Changing profession will not reset XP/h and other stats
-* Double gathering speed still breraks everything progress related
+* Double gathering speed still breaks everything progress related
  
 # In Progress
 * Info for T3 Materials
