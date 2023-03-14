@@ -29,6 +29,5 @@ This Project will help you To gather by giving you useful information as an info
 # In Progress
 * Info for T3 Materials
 * Info for Tool durability
-* GUI for config access
-* Ability to only show selected Info
+* Fix woodcutting
 
