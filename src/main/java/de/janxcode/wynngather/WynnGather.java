@@ -5,8 +5,7 @@ import de.janxcode.wynngather.gui.ModMenuGui;
 import de.janxcode.wynngather.handlers.ArmorStandNodeRegister;
 import de.janxcode.wynngather.inforenderer.DrawInfoPanel;
 import de.janxcode.wynngather.inforenderer.DrawNodeInfo;
-import de.janxcode.wynngather.inforenderer.Info;
-import de.janxcode.wynngather.interfaces.INodeRegister;
+import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
 import de.janxcode.wynngather.utils.DelayedTaskFrames;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
@@ -15,12 +14,14 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.IClientCommand;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // todo:
 //  - The gathering stats overlay and node boxes are seperate features, they should be fully seperated
@@ -28,8 +29,13 @@ import org.apache.logging.log4j.Logger;
 //      - seperate mod into core and features
 //      - use interfaces around core classes to allow dependency injection
 //  - This mod has guis in the form of screens, ingame overlays and block overlays. A clear difference should be established in the naming scheme
+//  - Wrapper around Forge events with better active/invactive handling
+//  - Gathering Sessions
 //  - Rewrite in Kotlin
 //  - Rewrite in Scratch (for performance)
+//  - keep a permanent record of gathering, just dynamically set the current session's stats based on user input and config
+//     e.g. (optionally) start session on node mined, end session after config idle time; start, end, reset on command
+//  - make timed averages more stable (also use interfaces here so that averaging implementations can be swapped easily)
 @Mod(modid = de.janxcode.wynngather.WynnGather.MODID, name = de.janxcode.wynngather.WynnGather.NAME, version = de.janxcode.wynngather.WynnGather.VERSION)
 public class WynnGather {
     // logger, use this instead of System.out.println
@@ -45,36 +51,37 @@ public class WynnGather {
         ClientCommandHandler.instance.registerCommand(new ModCommand());
     }
 
+    private boolean modInitialized = false;
 
-    private final Info info = Info.getInstance();
-    private final DrawInfoPanel panel = DrawInfoPanel.getInstance();
-    private final INodeRegister nodeRegister = ArmorStandNodeRegister.getInstance();
-    private final DrawNodeInfo renderNodeInfo = new DrawNodeInfo(nodeRegister);
-    private boolean modActive = false;
+    // this needs to go when features are implemented
+    private final List<IEventBusRegisterable> registerables = new ArrayList<>();
 
     private void toggle() {
-        if (modActive) unregister();
-        else register();
-
-        modActive = !modActive;
+        if (modInitialized) stopMod();
+        else initializeMod();
     }
 
-    private void unregister() {
-        MinecraftForge.EVENT_BUS.unregister(nodeRegister);
-        MinecraftForge.EVENT_BUS.unregister(panel);
-        MinecraftForge.EVENT_BUS.unregister(renderNodeInfo);
+    private void initializeMod() {
+        assert !modInitialized;
 
-        info.unregister();
+        ArmorStandNodeRegister nodeRegister = new ArmorStandNodeRegister();
+        registerables.add(nodeRegister);
+        registerables.add(new DrawNodeInfo(nodeRegister));// todo: use events instead
+        registerables.add(new DrawInfoPanel());
+
+        for (IEventBusRegisterable registerable : registerables) {
+            registerable.register();
+        }
+        modInitialized = true;
     }
 
-    private void register() {
-        MinecraftForge.EVENT_BUS.register(nodeRegister);
-        MinecraftForge.EVENT_BUS.register(panel);
-        MinecraftForge.EVENT_BUS.register(renderNodeInfo);
-
-
-        panel.update();
-        info.register();
+    private void stopMod() {
+        assert modInitialized;
+        for (IEventBusRegisterable registerable : registerables) {
+            registerable.unregister();
+        }
+        registerables.clear();
+        modInitialized = false;
     }
 
     // this would be much cleaner with an object declaration in Kotlin
@@ -94,6 +101,9 @@ public class WynnGather {
             return "Usage:\n/gather\n/gather start|stop|pos|menu";
         }
 
+        private static final String MOD_ALREADY_ACTIVE = "Mod already active";
+        private static final String MOD_NOT_ACTIVE = "Mod not active";
+
         @Override
         public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
             if (args.length == 0) {
@@ -103,13 +113,13 @@ public class WynnGather {
 
             switch (args[0]) {
                 case "start":
-                    if (modActive) throw new CommandException("Mod already active");
-                    register();
+                    if (modInitialized) throw new CommandException(MOD_ALREADY_ACTIVE);
+                    initializeMod();
                     break;
 
                 case "stop":
-                    if (!modActive) throw new CommandException("Mod not active");
-                    unregister();
+                    if (!modInitialized) throw new CommandException(MOD_NOT_ACTIVE);
+                    stopMod();
                     break;
 
                 case "pos":

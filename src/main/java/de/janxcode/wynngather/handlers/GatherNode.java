@@ -1,8 +1,9 @@
-package de.janxcode.wynngather.inforenderer;
+package de.janxcode.wynngather.handlers;
 
+import de.janxcode.wynngather.interfaces.IGatherNode;
 import de.janxcode.wynngather.utils.HorizontalPos;
 
-public class Node {
+public class GatherNode implements IGatherNode {
     private final HorizontalPos pos;
     private final int yPos;
     private final String type;
@@ -11,7 +12,7 @@ public class Node {
     private String miningProgress;
     private String nodeProf;
 
-    public Node(HorizontalPos pos, int yPos, String type) {
+    public GatherNode(HorizontalPos pos, int yPos, String type) {
         this.pos = pos;
         this.yPos = yPos;
         this.type = type;

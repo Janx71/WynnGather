@@ -1,12 +1,9 @@
 package de.janxcode.wynngather.utils;
 
-import de.janxcode.wynngather.WynnGather;
-import de.janxcode.wynngather.handlers.NodeMinedEvent;
-import de.janxcode.wynngather.inforenderer.Node;
+import de.janxcode.wynngather.handlers.GatherNode;
+import de.janxcode.wynngather.handlers.NodeProgressUpdatedEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.text.NumberFormat;
@@ -25,32 +22,30 @@ public class Utils {
     final static Pattern nexLevelPattern = Pattern.compile(nexLevelRegex);
 
 
-    public static void parseXpInfo(String input, Node node) {  // todo: refactor
+    public static void postNodeMined(String wynnNodeMinedText, GatherNode node) {  // todo: refactor
         int xp = 0;
         // Extract the xp and xp type if there is a match
 
         // Match the regular expressions against the input string
-        Matcher xpMatcher = xpPattern.matcher(input);
+        Matcher xpMatcher = xpPattern.matcher(wynnNodeMinedText);
         boolean b = xpMatcher.find();
         if (b) {
             xp = Integer.parseInt(xpMatcher.group(1));
-            String xpType = xpMatcher.group(2);
+            String xpType = xpMatcher.group(2);  // todo: probably post this too (after passing to enum)
             //System.out.println("XP Type: " + xpType);
         }
 
         int nexLevel = 0;
 
         // Match the regular expressions against the input string
-        Matcher nexLevelMatcher = nexLevelPattern.matcher(input);
+        Matcher nexLevelMatcher = nexLevelPattern.matcher(wynnNodeMinedText);
 
         // Extract the next level percentage if there is a match
         if (nexLevelMatcher.find()) {
             nexLevel = Integer.parseInt(nexLevelMatcher.group(1));
         }
 
-        // a "parse" method should not have side effects
-        // todo: split this method into a pure function and a posting method
-        MinecraftForge.EVENT_BUS.post(new NodeMinedEvent(xp, nexLevel, node));
+        MinecraftForge.EVENT_BUS.post(new NodeProgressUpdatedEvent.MinedEvent(xp, nexLevel, node));
     }
 
     public static String formatValue(long value) {

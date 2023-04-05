@@ -1,8 +1,7 @@
 package de.janxcode.wynngather.handlers;
 
-import de.janxcode.wynngather.inforenderer.Info;
-import de.janxcode.wynngather.inforenderer.Node;
 import de.janxcode.wynngather.inforenderer.NodeType;
+import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
 import de.janxcode.wynngather.interfaces.INodeRegister;
 import de.janxcode.wynngather.utils.HorizontalPos;
 import de.janxcode.wynngather.utils.Utils;
@@ -10,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -17,23 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ArmorStandNodeRegister implements INodeRegister {
-
-    private static ArmorStandNodeRegister instance;
-
-    public static ArmorStandNodeRegister getInstance() {
-        if (instance == null) instance = new ArmorStandNodeRegister();
-        return instance;
-    }
-
-    private ArmorStandNodeRegister() {
-        if (instance != null) throw new IllegalStateException("Instance already exists");
-
-    }
-
+public class ArmorStandNodeRegister implements INodeRegister, IEventBusRegisterable {
     private final Minecraft mc = Minecraft.getMinecraft();
-    private final Info info = Info.getInstance();
-    private final List<Node> nodes = new ArrayList<>();
+    private final List<GatherNode> nodes = new ArrayList<>();
     private int mineTicks = 0;
 
     @SubscribeEvent
@@ -59,12 +45,12 @@ public class ArmorStandNodeRegister implements INodeRegister {
 
             //If the Node is identified as a material, check if already is in the List nodes by comparing position. If not -> add
             if (isMaterial(name) && nodes.stream().noneMatch(node -> node.getPos().equals(pos))) {
-                nodes.add(new Node(pos, (int) stand.posY, name));
+                nodes.add(new GatherNode(pos, (int) stand.posY, name));
             }
 
             //Get current node by comparing positions
-            Node node = null;
-            for (Node n : nodes) {
+            GatherNode node = null;
+            for (GatherNode n : nodes) {
                 if (n.getPos().equals(pos)) {
                     node = n;
                 }
@@ -83,15 +69,15 @@ public class ArmorStandNodeRegister implements INodeRegister {
         return Arrays.stream(NodeType.nodeTypes).anyMatch(nodeType -> nodeType.equalsIgnoreCase(name));
     }
 
-    private void setProgress(Node node, NBTTagCompound nbt) {
+    private void setProgress(GatherNode node, NBTTagCompound nbt) {
         //Sets the progress Strings for the current node and the info tab
         if (!node.isMined()) {
             node.setMiningProgress(nbt.getString("CustomName"));
-            info.setProgress(nbt.getString("CustomName"));
+            MinecraftForge.EVENT_BUS.post(new NodeProgressUpdatedEvent(node));
         }
     }
 
-    private void setProfession(Node node, String name) {
+    private void setProfession(GatherNode node, String name) {
         // todo: refactor with enum, also this doesnt belong here
         if (name.toLowerCase().contains("mining")) node.setProf("mining");
         else if (name.toLowerCase().contains("cutting")) node.setProf("cutting");
@@ -100,24 +86,25 @@ public class ArmorStandNodeRegister implements INodeRegister {
     }
 
     // set method with return value and side effects, todo: refactor
-    private int setMined(Node node, EntityArmorStand stand, String name, int ticks) {
+    private int setMined(GatherNode node, EntityArmorStand stand, String name, int ticks) {
         //The tag needs to be removed instantly because it would count multiple times.
         //Mining a Node will produce 2 separate finished tags in short succession. Sets cool down between checks
+        //todo: find better solution, presumably using the cooldown
         stand.setCustomNameTag("");
         if (ticks <= 40) return ticks;
 
-        Utils.parseXpInfo(name, node);
         mineTicks = 0;
 
         node.setMined();
         node.setMiningProgress("");
-        info.setProgress("");
+        Utils.postNodeMined(name, node);
+
         return 0;
     }
 
 
     @Override
-    public List<Node> getNodes() {  // IReadOnlyList when
+    public List<GatherNode> getNodes() {  // IReadOnlyList when
         return this.nodes;
     }
 }

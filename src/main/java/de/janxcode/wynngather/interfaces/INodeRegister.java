@@ -1,11 +1,11 @@
 package de.janxcode.wynngather.interfaces;
 
-import de.janxcode.wynngather.inforenderer.Node;
+import de.janxcode.wynngather.handlers.GatherNode;
 
 import java.util.List;
 
 public interface INodeRegister {
-    List<Node> getNodes();
+    List<GatherNode> getNodes();
 }
 
 

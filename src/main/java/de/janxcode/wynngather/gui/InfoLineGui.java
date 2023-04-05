@@ -116,7 +116,6 @@ public class InfoLineGui extends GuiScreen {
                 .toArray(String[]::new);
 
         ConfigManager.sync(WynnGather.MODID, Config.Type.INSTANCE);
-        DrawInfoPanel.getInstance().update();
 
         super.onGuiClosed();
     }

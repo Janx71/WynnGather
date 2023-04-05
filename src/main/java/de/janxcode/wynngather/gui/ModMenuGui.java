@@ -13,6 +13,7 @@ import net.minecraftforge.common.config.ConfigManager;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class ModMenuGui extends GuiScreen {
     private final Minecraft mc = Minecraft.getMinecraft();
@@ -49,7 +50,7 @@ public class ModMenuGui extends GuiScreen {
         };
 
         drawRect(rect.x - 5, rect.y - 5, rect.width + 5, rect.height + 5, 0x66000000);
-        RenderUtils.drawLayeredString(text, rect.x, rect.y, ModConfig.TextColor, fontRenderer);
+        RenderUtils.drawLayeredString(Arrays.stream(text), rect.x, rect.y, ModConfig.TextColor, fontRenderer);
 
         if (toggled) {
             //horizontal

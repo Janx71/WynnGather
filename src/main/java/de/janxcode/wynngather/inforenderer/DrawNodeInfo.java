@@ -1,5 +1,8 @@
 package de.janxcode.wynngather.inforenderer;
 
+import de.janxcode.wynngather.handlers.GatherNode;
+import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
+import de.janxcode.wynngather.interfaces.IGatherNode;
 import de.janxcode.wynngather.interfaces.INodeRegister;
 import de.janxcode.wynngather.utils.HorizontalPos;
 import de.janxcode.wynngather.utils.ModConfig;
@@ -17,7 +20,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 
-public class DrawNodeInfo {
+public class DrawNodeInfo implements IEventBusRegisterable {
     private final Minecraft mc = Minecraft.getMinecraft();
 
     private final INodeRegister nodeRegister;
@@ -33,7 +36,7 @@ public class DrawNodeInfo {
     public void onRender(RenderWorldLastEvent e) {
         if (mc.world == null) return;
 
-        for (Node node : nodeRegister.getNodes()) {
+        for (GatherNode node : nodeRegister.getNodes()) {
             BlockPos pos = new BlockPos(node.getPos().getX(), node.getYPos(), node.getPos().getZ());
             AxisAlignedBB aabb = Utils.getAabb(ModConfig.renderDistance);
 
@@ -61,14 +64,14 @@ public class DrawNodeInfo {
         }
     }
 
-    private int determineRenderOffset(Node node) {
+    private int determineRenderOffset(GatherNode node) {
         if (node.getProf().equals("mining")) return 2;
         if (node.getProf().equals("fishing")) return 1;
         if (node.getProf().equals("farming")) return 2;
         return 0;
     }
 
-    private int determineColor(Node node, double ratio) {
+    private int determineColor(GatherNode node, double ratio) {
         int color = FAR.getRGB();
 
         //Code copied from StackOverflow

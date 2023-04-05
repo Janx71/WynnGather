@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.stream.Stream;
 
 //Got some of this code from a forum of that I forgot the name. Sure do hope it's not licensed xD
 public class RenderUtils {
@@ -113,9 +114,12 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
-    public static void drawLayeredString(String[] text, int x, int y, int color, FontRenderer renderer) {
+    public static void drawLayeredString(Stream<String> text, int x, int y, int color, FontRenderer renderer) {
         int lines = 0;
-        for (String line : text) {
+
+        // iterate over text using a for-each loop without allocating a new collection, identical to
+        // text.forEach(() -> { ... });
+        for (String line : (Iterable<String>) text::iterator) {
             renderer.drawString(line, x, y + renderer.FONT_HEIGHT * lines, color);
             lines++;
         }

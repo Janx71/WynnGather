@@ -1,36 +1,45 @@
 package de.janxcode.wynngather.inforenderer;
 
 import de.janxcode.wynngather.WynnGather;
+import de.janxcode.wynngather.handlers.NodeProgressUpdatedEvent;
+import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
 import de.janxcode.wynngather.utils.ModConfig;
 import de.janxcode.wynngather.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 import java.util.Arrays;
 
-public class DrawInfoPanel {
+public class DrawInfoPanel implements IEventBusRegisterable {
     // todo: this should be a non-singleton class called GatherStatsOverlay or similar
-    private InfoLine[] infoLines;
+    private String[] infoLinePatterns;
     Minecraft mc = Minecraft.getMinecraft();
-    private static DrawInfoPanel instance;
+    private final StatsHelper stats = new StatsHelper();
 
-    private DrawInfoPanel() {
-        if (instance != null) throw new IllegalStateException("Instance already exists");
+    private String latestNodeProgress = "";
+
+    @SubscribeEvent
+    public void onNodeUpdate(NodeProgressUpdatedEvent e) {
+        this.latestNodeProgress = e.node.getMiningProgress();
     }
 
-    public static DrawInfoPanel getInstance() {
-        if (instance == null) {
-            instance = new DrawInfoPanel();
-        }
-
-        return instance;
+    public void register() {
+        stats.register();
+        updatePatterns();
+        IEventBusRegisterable.super.register();
     }
 
-    public void update() {
-        infoLines = Arrays.stream(ModConfig.infoLines)
-                .map(InfoLine::new).toArray(InfoLine[]::new);
+    public void unregister() {
+        stats.unregister();
+        IEventBusRegisterable.super.unregister();
+    }
+
+    public void updatePatterns() {
+        infoLinePatterns = ModConfig.infoLines;
     }
 
     @SubscribeEvent
@@ -38,8 +47,78 @@ public class DrawInfoPanel {
 
         if (WynnGather.GUI) return;
 
-        String[] lines = Arrays.stream(infoLines).map(InfoLine::getOutputLine).toArray(String[]::new);
-
-        RenderUtils.drawLayeredString(lines, ModConfig.guiPosX, ModConfig.guiPosY, Color.WHITE.getRGB(), mc.fontRenderer);
+        RenderUtils.drawLayeredString(Arrays.stream(infoLinePatterns).map(this::getOutputLine), ModConfig.guiPosX, ModConfig.guiPosY, Color.WHITE.getRGB(), mc.fontRenderer);
     }
+
+    @SubscribeEvent
+    public void onConfigChange(ConfigChangedEvent.PostConfigChangedEvent e) {
+        if (e.getModID().equals(WynnGather.MODID)) {
+            updatePatterns();
+        }
+    }
+
+    private String getOutputLine(String line) { // todo: refactor
+        StringBuilder output = new StringBuilder();
+        String remainingLine = line;
+        int start;
+        int end = 0;
+        while ((start = remainingLine.indexOf('{', end)) != -1 && (end = remainingLine.indexOf('}', start)) != -1) {
+            output.append(remainingLine, 0, start); // append everything before the opening brace
+            String textInsideBraces = remainingLine.substring(start + 1, end);
+            String newTextInsideBraces = getStatsValue(textInsideBraces);
+            output.append(newTextInsideBraces); // append the modified text inside the braces
+            remainingLine = remainingLine.substring(end + 1); // set the remainingLine to everything after the closing brace, excluding the closing brace itself
+            end = 0; // reset the end variable to 0 so it starts searching for the next opening brace from the beginning of remainingLine
+        }
+        output.append(remainingLine); // append anything that comes after the last closing brace
+        return output.toString();
+    }
+
+    private String getStatsValue(String v) {
+        // todo: refactor with enum
+        switch (v) {
+            case "nodesMined":
+                return String.valueOf(stats.getNodesMined());
+
+            case "nodesPerMinute":
+                return String.valueOf(stats.getNodesPerMinute());
+
+            case "xpPerHour":
+                return String.valueOf(stats.getXpPerHour());
+
+            case "nextLevel":
+                return String.valueOf(stats.getNextLevel());
+
+            case "type":
+                return stats.getType();
+
+            case "time":
+                return stats.getTime();
+
+            case "progress":
+                return latestNodeProgress;
+
+        }
+
+        for (TextFormatting value : TextFormatting.values()) {
+            try {
+                TextFormatting formatting = TextFormatting.valueOf(v);
+                if (value.equals(formatting)) {
+                    return value.toString();
+                }
+            } catch (IllegalArgumentException e) {
+                return "{" + v + "}";
+            }
+        }
+
+        return "{" + v + "}";
+    }
+//    private int xp = 0;
+//    private long startTime = System.currentTimeMillis();  // todo: more control over how and when time resets
+//    private int nodesMined = 0;
+//    private int nextLevel = 0;
+//    private String type = "" + TextFormatting.RED + TextFormatting.BOLD + "Not Set";  // type of what?
+//    private String progress = ""; // progress of what?
+
+
 }
