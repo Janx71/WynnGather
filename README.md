@@ -2,7 +2,7 @@
 
 ## A Forge 1.12.2 Mod Made for Making Wynncraft Gathering easier
 
-This Project will help you To gather by giving you useful information as an info panel on your screen as by highlighting specific nodes to give you real-time information about XP gain, node regeneration time and more
+This Project will help you To gather by giving you useful information as an info panel on your screen as by highlighting specific nodes to give you real-time information about XP gain, node regeneration time and more. Thanks to Kyykek (Kyyken on Github) for helping me with this project.
 
 * Shows The Material Type you are gathering.
 * Shows the time to indicate how long you have been gathering.
