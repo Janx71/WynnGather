@@ -113,9 +113,9 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
-    public static void drawLayeredString(String[] text, int x, int y, int color, FontRenderer renderer){
+    public static void drawLayeredString(String[] text, int x, int y, int color, FontRenderer renderer) {
         int lines = 0;
-        for (String line : text){
+        for (String line : text) {
             renderer.drawString(line, x, y + renderer.FONT_HEIGHT * lines, color);
             lines++;
         }

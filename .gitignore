@@ -1,0 +1,14 @@
+# Gradle
+.gradle/
+build/
+
+# Forge Gradle
+run/
+
+# InteliJ
+.idea
+out/
+*.iml
+
+# Visual Studio Code
+.history/

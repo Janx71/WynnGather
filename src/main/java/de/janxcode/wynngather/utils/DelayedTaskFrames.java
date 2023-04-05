@@ -8,15 +8,15 @@ public class DelayedTaskFrames {
     private int counter;
     private final Runnable runnable;
 
-    public DelayedTaskFrames(Runnable run, int frames){
+    public DelayedTaskFrames(Runnable run, int frames) {
         counter = frames;
         this.runnable = run;
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
-    public void onTick(RenderGameOverlayEvent.Text event){
-        if(counter <= 0){
+    public void onTick(RenderGameOverlayEvent.Text event) {
+        if (counter <= 0) {
             MinecraftForge.EVENT_BUS.unregister(this);
             runnable.run();
         }

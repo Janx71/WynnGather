@@ -11,7 +11,7 @@ public class Node {
     private String miningProgress;
     private String nodeProf;
 
-    public Node(HorizontalPos pos, int yPos, String type){
+    public Node(HorizontalPos pos, int yPos, String type) {
         this.pos = pos;
         this.yPos = yPos;
         this.type = type;
@@ -21,27 +21,27 @@ public class Node {
         nodeProf = "";
     }
 
-    public void setMined(){
+    public void setMined() {
         mined = true;
         minedTimeStamp = System.currentTimeMillis();
     }
 
-    public int getYPos(){
+    public int getYPos() {
         return yPos;
     }
 
-    public void setMiningProgress(String progress){
+    public void setMiningProgress(String progress) {
         miningProgress = progress;
     }
 
-    public String getMiningProgress(){
+    public String getMiningProgress() {
         return miningProgress;
     }
 
-    public boolean isMined(){
-        if(!mined) return false;
+    public boolean isMined() {
+        if (!mined) return false;
 
-        if(System.currentTimeMillis() - minedTimeStamp > 60000){
+        if (System.currentTimeMillis() - minedTimeStamp > 60000) {
             mined = false;
             minedTimeStamp = 0;
         }
@@ -49,23 +49,23 @@ public class Node {
         return mined;
     }
 
-    public long getMinedTime(){
+    public long getMinedTime() {
         return System.currentTimeMillis() - minedTimeStamp;
     }
 
-    public HorizontalPos getPos(){
+    public HorizontalPos getPos() {
         return pos;
     }
 
-    public String getProf(){
+    public String getProf() {
         return nodeProf;
     }
 
-    public void setProf(String prof){
+    public void setProf(String prof) {
         nodeProf = prof;
     }
 
-    public String getType(){
+    public String getType() {
         return type;
     }
 }

@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class InfoLineGui extends GuiScreen {
-    private final FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    private final Minecraft mc = Minecraft.getMinecraft();
     private final List<GuiTextField> textFields = new LinkedList<>();
 
     @Override
@@ -24,16 +24,16 @@ public class InfoLineGui extends GuiScreen {
 
         //title
         String title = "Edit GUI Lines";
-        double TMultiplier = (width / (double) fr.getStringWidth(title)) / 2.8;
+        double TMultiplier = (width / (double) mc.fontRenderer.getStringWidth(title)) / 2.8;
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(TMultiplier, TMultiplier, 1);
-        int tPosX = (int) Math.round((width / 2d - fr.getStringWidth(title) * TMultiplier / 2) / TMultiplier);
-        int tPosY = (int) Math.round(((height / 8d - fr.FONT_HEIGHT * TMultiplier) / TMultiplier));
-        fr.drawString(title, tPosX, tPosY, ModConfig.TextColor);
+        int tPosX = (int) Math.round((width / 2d - mc.fontRenderer.getStringWidth(title) * TMultiplier / 2) / TMultiplier);
+        int tPosY = (int) Math.round(((height / 8d - mc.fontRenderer.FONT_HEIGHT * TMultiplier) / TMultiplier));
+        mc.fontRenderer.drawString(title, tPosX, tPosY, ModConfig.TextColor);
         GlStateManager.popMatrix();
 
-        for (GuiTextField field : textFields){
+        for (GuiTextField field : textFields) {
             field.drawTextBox();
         }
 
@@ -46,10 +46,10 @@ public class InfoLineGui extends GuiScreen {
         textFields.clear();
 
         int index = 0;
-        for (String line : ModConfig.infoLines){
+        for (String line : ModConfig.infoLines) {
             index++;
 
-            GuiTextField field = new GuiTextField(index, fr, width / 30, height / 10 + height / 16 * index, width - width / 15, 20);
+            GuiTextField field = new GuiTextField(index, mc.fontRenderer, width / 30, height / 10 + height / 16 * index, width - width / 15, 20);
             field.setMaxStringLength(200);
             field.setText(line);
             textFields.add(field);
@@ -60,7 +60,7 @@ public class InfoLineGui extends GuiScreen {
 
     @Override
     public void updateScreen() {
-        for (GuiTextField field : textFields){
+        for (GuiTextField field : textFields) {
             field.updateCursorCounter();
         }
 
@@ -70,10 +70,10 @@ public class InfoLineGui extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
 
-        System.out.println(typedChar);
+        WynnGather.logger.trace(typedChar);
 
-        for (GuiTextField field : textFields){
-            if(!field.isFocused()) continue;
+        for (GuiTextField field : textFields) {
+            if (!field.isFocused()) continue;
 
             field.textboxKeyTyped(typedChar, keyCode);
         }
@@ -88,15 +88,15 @@ public class InfoLineGui extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for (GuiTextField field : textFields){
-            if(field.isFocused()) field.setFocused(false);
+        for (GuiTextField field : textFields) {
+            if (field.isFocused()) field.setFocused(false);
 
             //Ah yes it fucking sucks
-            if(mouseX > field.x && mouseX < field.x + field.width && mouseY > field.y && mouseY < field.y + field.height){
+            if (mouseX > field.x && mouseX < field.x + field.width && mouseY > field.y && mouseY < field.y + field.height) {
                 field.setFocused(true);
 
-                double averageCharSize = fr.getStringWidth(field.getText())  / (double) field.getText().length();
-                if(mouseX - field.x < averageCharSize * (field.getText().length())) {
+                double averageCharSize = mc.fontRenderer.getStringWidth(field.getText()) / (double) field.getText().length();
+                if (mouseX - field.x < averageCharSize * (field.getText().length())) {
                     field.setCursorPosition((int) Math.floor((mouseX - field.x) / averageCharSize));
                 } else {
                     field.setCursorPosition(field.getText().length());
@@ -116,7 +116,7 @@ public class InfoLineGui extends GuiScreen {
                 .toArray(String[]::new);
 
         ConfigManager.sync(WynnGather.MODID, Config.Type.INSTANCE);
-        DrawInfoPanel.getPanel().update();
+        DrawInfoPanel.getInstance().update();
 
         super.onGuiClosed();
     }

@@ -4,22 +4,22 @@ public class HorizontalPos {
     private final int x;
     private final int z;
 
-    public HorizontalPos(int x, int z){
+    public HorizontalPos(int x, int z) {
         this.x = x;
         this.z = z;
     }
 
-    public int getX(){
+    public int getX() {
         return x;
     }
 
-    public int getZ(){
+    public int getZ() {
         return z;
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(!(obj instanceof HorizontalPos)) return false;
+    public boolean equals(Object obj) {
+        if (!(obj instanceof HorizontalPos)) return false;
         HorizontalPos pos = (HorizontalPos) obj;
 
         return this.getX() == pos.getX() && this.getZ() == pos.getZ();

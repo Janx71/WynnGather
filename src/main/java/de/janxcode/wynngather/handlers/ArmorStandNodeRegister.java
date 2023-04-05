@@ -1,32 +1,44 @@
 package de.janxcode.wynngather.handlers;
 
-import de.janxcode.wynngather.WynnGather;
-import de.janxcode.wynngather.inforenderer.DrawInfoPanel;
 import de.janxcode.wynngather.inforenderer.Info;
 import de.janxcode.wynngather.inforenderer.Node;
 import de.janxcode.wynngather.inforenderer.NodeType;
+import de.janxcode.wynngather.interfaces.INodeRegister;
 import de.janxcode.wynngather.utils.HorizontalPos;
 import de.janxcode.wynngather.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ArmourStandHandler {
+public class ArmorStandNodeRegister implements INodeRegister {
+
+    private static ArmorStandNodeRegister instance;
+
+    public static ArmorStandNodeRegister getInstance() {
+        if (instance == null) instance = new ArmorStandNodeRegister();
+        return instance;
+    }
+
+    private ArmorStandNodeRegister() {
+        if (instance != null) throw new IllegalStateException("Instance already exists");
+
+    }
+
     private final Minecraft mc = Minecraft.getMinecraft();
     private final Info info = Info.getInstance();
-    private final List<Node> nodes = WynnGather.NODES;
+    private final List<Node> nodes = new ArrayList<>();
     private int mineTicks = 0;
 
     @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent e){
-        if(mc.world == null || mc.player == null ) return;
+    public void onTick(TickEvent.ClientTickEvent e) {
+        if (mc.world == null || mc.player == null) return;
         mineTicks++;
 
         //Player coordinates used to create an AxisAlignedBB with player at center to search for EntityArmorStand
@@ -34,7 +46,7 @@ public class ArmourStandHandler {
         Iterable<EntityArmorStand> stands = mc.world.getEntitiesWithinAABB(EntityArmorStand.class, Utils.getAabb(20));
 
         //Loop over every EntityArmorStand in aabb and apply needed actions
-        for(EntityArmorStand stand : stands) {
+        for (EntityArmorStand stand : stands) {
             NBTTagCompound nbt = stand.serializeNBT();
 
             if (nbt.getString("CustomName").equals("")) continue;
@@ -47,50 +59,52 @@ public class ArmourStandHandler {
 
             //If the Node is identified as a material, check if already is in the List nodes by comparing position. If not -> add
             if (isMaterial(name) && nodes.stream().noneMatch(node -> node.getPos().equals(pos))) {
-                nodes.add(new Node(pos, (int)stand.posY, name));
+                nodes.add(new Node(pos, (int) stand.posY, name));
             }
 
             //Get current node by comparing positions
             Node node = null;
-            for (Node n: nodes){
-                if(n.getPos().equals(pos)){
+            for (Node n : nodes) {
+                if (n.getPos().equals(pos)) {
                     node = n;
                 }
             }
 
-            if(node == null) continue;
+            if (node == null) continue;
 
             //Perform actions for specific Nodes
-            if(node.getProf().equals("")) setProfession(node, name);
-            if(name.contains("XP] [")) mineTicks = setMined(node, stand, name, mineTicks);
-            if(name.contains("[|||")) setProgress(node, nbt);
+            if (node.getProf().equals("")) setProfession(node, name);
+            if (name.contains("XP] [")) mineTicks = setMined(node, stand, name, mineTicks);
+            if (name.contains("[|||")) setProgress(node, nbt);
         }
     }
 
-    private boolean isMaterial(String name){
+    private boolean isMaterial(String name) {
         return Arrays.stream(NodeType.nodeTypes).anyMatch(nodeType -> nodeType.equalsIgnoreCase(name));
     }
 
-    private void setProgress(Node node, NBTTagCompound nbt){
+    private void setProgress(Node node, NBTTagCompound nbt) {
         //Sets the progress Strings for the current node and the info tab
-        if(!node.isMined()){
+        if (!node.isMined()) {
             node.setMiningProgress(nbt.getString("CustomName"));
             info.setProgress(nbt.getString("CustomName"));
         }
     }
 
-    private void setProfession(Node node, String name){
-        if(name.toLowerCase().contains("mining")) node.setProf("mining");
-        else if(name.toLowerCase().contains("cutting")) node.setProf("cutting");
-        else if(name.toLowerCase().contains("fishing")) node.setProf("fishing");
-        else if(name.toLowerCase().contains("farming")) node.setProf("farming");
+    private void setProfession(Node node, String name) {
+        // todo: refactor with enum, also this doesnt belong here
+        if (name.toLowerCase().contains("mining")) node.setProf("mining");
+        else if (name.toLowerCase().contains("cutting")) node.setProf("cutting");
+        else if (name.toLowerCase().contains("fishing")) node.setProf("fishing");
+        else if (name.toLowerCase().contains("farming")) node.setProf("farming");
     }
 
-    private int setMined(Node node, EntityArmorStand stand, String name, int ticks){
+    // set method with return value and side effects, todo: refactor
+    private int setMined(Node node, EntityArmorStand stand, String name, int ticks) {
         //The tag needs to be removed instantly because it would count multiple times.
         //Mining a Node will produce 2 separate finished tags in short succession. Sets cool down between checks
         stand.setCustomNameTag("");
-        if(ticks <= 40) return ticks;
+        if (ticks <= 40) return ticks;
 
         Utils.parseXpInfo(name, node);
         mineTicks = 0;
@@ -99,5 +113,11 @@ public class ArmourStandHandler {
         node.setMiningProgress("");
         info.setProgress("");
         return 0;
+    }
+
+
+    @Override
+    public List<Node> getNodes() {  // IReadOnlyList when
+        return this.nodes;
     }
 }

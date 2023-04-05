@@ -5,7 +5,8 @@ import net.minecraft.util.text.TextFormatting;
 public class InfoLine {
     private final Info info = Info.getInstance();
     private final String line;
-    public InfoLine(String line){
+
+    public InfoLine(String line) {
         this.line = line;
     }
 
@@ -27,8 +28,9 @@ public class InfoLine {
     }
 
 
-    private String getValue(String v){
-        switch (v){
+    private String getValue(String v) {
+        // todo: refactor with enum
+        switch (v) {
             case "nodesMined":
                 return String.valueOf(info.getNodesMined());
 
@@ -52,7 +54,7 @@ public class InfoLine {
 
         }
 
-        for (TextFormatting value : TextFormatting.values()){
+        for (TextFormatting value : TextFormatting.values()) {
             try {
                 TextFormatting formatting = TextFormatting.valueOf(v);
                 if (value.equals(formatting)) {
