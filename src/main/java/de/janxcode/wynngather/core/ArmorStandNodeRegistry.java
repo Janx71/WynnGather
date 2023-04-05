@@ -1,8 +1,7 @@
-package de.janxcode.wynngather.handlers;
+package de.janxcode.wynngather.core;
 
-import de.janxcode.wynngather.inforenderer.NodeType;
-import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
-import de.janxcode.wynngather.interfaces.INodeRegistry;
+import de.janxcode.wynngather.core.interfaces.IRegisterable;
+import de.janxcode.wynngather.core.interfaces.IGlobalNodeRegistry;
 import de.janxcode.wynngather.utils.HorizontalPos;
 import de.janxcode.wynngather.utils.Utils;
 import net.minecraft.client.Minecraft;
@@ -17,19 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GlobalNodeRegistry implements INodeRegistry, IEventBusRegisterable {
-    private static GlobalNodeRegistry instance = null;
-
-    private GlobalNodeRegistry() {
-        if (instance != null) throw new IllegalStateException("Instance already exists.");
-    }
-
-    public static GlobalNodeRegistry getInstance() {
-        if (instance == null) instance = new GlobalNodeRegistry();
-        return instance;
-    }
-
-
+public class ArmorStandNodeRegistry implements IGlobalNodeRegistry, IRegisterable {
     private final Minecraft mc = Minecraft.getMinecraft();
     private final List<GatherNode> nodes = new ArrayList<>();
     private int mineTicks = 0;

@@ -1,8 +1,8 @@
-package de.janxcode.wynngather.inforenderer;
+package de.janxcode.wynngather.features.statsoverlay;
 
 import de.janxcode.wynngather.WynnGather;
-import de.janxcode.wynngather.handlers.NodeProgressUpdatedEvent;
-import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
+import de.janxcode.wynngather.core.NodeProgressUpdatedEvent;
+import de.janxcode.wynngather.core.interfaces.IRegisterable;
 import de.janxcode.wynngather.utils.ModConfig;
 import de.janxcode.wynngather.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.awt.*;
 import java.util.Arrays;
 
-public class DrawInfoPanel implements IEventBusRegisterable {
+public class DrawInfoPanel implements IRegisterable {
     // todo: this should be a non-singleton class called GatherStatsOverlay or similar
     private String[] infoLinePatterns;
     Minecraft mc = Minecraft.getMinecraft();
@@ -30,12 +30,12 @@ public class DrawInfoPanel implements IEventBusRegisterable {
     public void register() {
         stats.register();
         updatePatterns();
-        IEventBusRegisterable.super.register();
+        IRegisterable.super.register();
     }
 
     public void unregister() {
         stats.unregister();
-        IEventBusRegisterable.super.unregister();
+        IRegisterable.super.unregister();
     }
 
     public void updatePatterns() {

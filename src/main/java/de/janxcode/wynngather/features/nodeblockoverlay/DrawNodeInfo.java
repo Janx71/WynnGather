@@ -1,9 +1,9 @@
-package de.janxcode.wynngather.inforenderer;
+package de.janxcode.wynngather.features.nodeblockoverlay;
 
-import de.janxcode.wynngather.handlers.GatherNode;
-import de.janxcode.wynngather.handlers.GlobalNodeRegistry;
-import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
-import de.janxcode.wynngather.interfaces.INodeRegistry;
+import de.janxcode.wynngather.WynnGather;
+import de.janxcode.wynngather.core.GatherNode;
+import de.janxcode.wynngather.core.interfaces.IRegisterable;
+import de.janxcode.wynngather.core.interfaces.IGlobalNodeRegistry;
 import de.janxcode.wynngather.utils.HorizontalPos;
 import de.janxcode.wynngather.utils.ModConfig;
 import de.janxcode.wynngather.utils.RenderUtils;
@@ -20,10 +20,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 
-public class DrawNodeInfo implements IEventBusRegisterable {
+public class DrawNodeInfo implements IRegisterable {
     private final Minecraft mc = Minecraft.getMinecraft();
 
-    private final INodeRegistry nodeRegister = GlobalNodeRegistry.getInstance();
+    private final IGlobalNodeRegistry nodeRegister = WynnGather.getGlobalNodeRegistry();
 
     private final static Color FAR = new Color(44, 94, 26);
     private final static Color CLOSE = new Color(139, 0, 0);

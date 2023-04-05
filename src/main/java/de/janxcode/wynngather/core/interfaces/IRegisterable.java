@@ -1,9 +1,9 @@
-package de.janxcode.wynngather.interfaces;
+package de.janxcode.wynngather.core.interfaces;
 
 
 import net.minecraftforge.common.MinecraftForge;
 
-public interface IEventBusRegisterable {  // todo: rename
+public interface IRegisterable {  // todo: rename
     default void register() {
         MinecraftForge.EVENT_BUS.register(this);
     }

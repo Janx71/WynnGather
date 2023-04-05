@@ -1,4 +1,4 @@
-package de.janxcode.wynngather.handlers;
+package de.janxcode.wynngather.core;
 
 import net.minecraftforge.fml.common.eventhandler.Event;
 

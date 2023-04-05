@@ -1,4 +1,4 @@
-package de.janxcode.wynngather.gui;
+package de.janxcode.wynngather.core;
 
 import de.janxcode.wynngather.WynnGather;
 import de.janxcode.wynngather.utils.ModConfig;

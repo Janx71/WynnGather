@@ -1,7 +1,7 @@
 package de.janxcode.wynngather.utils;
 
-import de.janxcode.wynngather.handlers.GatherNode;
-import de.janxcode.wynngather.handlers.NodeProgressUpdatedEvent;
+import de.janxcode.wynngather.core.GatherNode;
+import de.janxcode.wynngather.core.NodeProgressUpdatedEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.MinecraftForge;

@@ -1,6 +1,6 @@
-package de.janxcode.wynngather.inforenderer;
+package de.janxcode.wynngather.features.statsoverlay;
 
-import de.janxcode.wynngather.handlers.NodeProgressUpdatedEvent;
+import de.janxcode.wynngather.core.NodeProgressUpdatedEvent;
 import de.janxcode.wynngather.utils.Utils;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -49,9 +49,6 @@ public class StatsHelper {  // this class has too many responsibilities
         return nodesMined;
     }
 
-    public void setProgress(String progress) {
-        this.progress = progress;
-    }
 
     public String getType() {
         return type;
@@ -61,9 +58,6 @@ public class StatsHelper {  // this class has too many responsibilities
         return nextLevel;
     }
 
-    public String getProgress() {
-        return progress;
-    }
 
     public String getTime() { // todo: use Duration API
         long seconds = (System.currentTimeMillis() - startTime) / 1000;

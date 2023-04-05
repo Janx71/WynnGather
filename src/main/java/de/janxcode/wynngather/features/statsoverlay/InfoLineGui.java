@@ -1,10 +1,8 @@
-package de.janxcode.wynngather.gui;
+package de.janxcode.wynngather.features.statsoverlay;
 
 import de.janxcode.wynngather.WynnGather;
-import de.janxcode.wynngather.inforenderer.DrawInfoPanel;
 import de.janxcode.wynngather.utils.ModConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;

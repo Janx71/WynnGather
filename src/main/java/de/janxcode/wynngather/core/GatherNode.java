@@ -1,6 +1,6 @@
-package de.janxcode.wynngather.handlers;
+package de.janxcode.wynngather.core;
 
-import de.janxcode.wynngather.interfaces.IGatherNode;
+import de.janxcode.wynngather.core.interfaces.IGatherNode;
 import de.janxcode.wynngather.utils.HorizontalPos;
 
 public class GatherNode implements IGatherNode {

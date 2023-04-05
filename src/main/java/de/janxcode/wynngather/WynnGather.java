@@ -1,11 +1,12 @@
 package de.janxcode.wynngather;
 
-import de.janxcode.wynngather.gui.InfoLineGui;
-import de.janxcode.wynngather.gui.ModMenuGui;
-import de.janxcode.wynngather.handlers.GlobalNodeRegistry;
-import de.janxcode.wynngather.inforenderer.DrawInfoPanel;
-import de.janxcode.wynngather.inforenderer.DrawNodeInfo;
-import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
+import de.janxcode.wynngather.features.statsoverlay.InfoLineGui;
+import de.janxcode.wynngather.core.ModMenuGui;
+import de.janxcode.wynngather.core.ArmorStandNodeRegistry;
+import de.janxcode.wynngather.features.statsoverlay.DrawInfoPanel;
+import de.janxcode.wynngather.features.nodeblockoverlay.DrawNodeInfo;
+import de.janxcode.wynngather.core.interfaces.IGlobalNodeRegistry;
+import de.janxcode.wynngather.core.interfaces.IRegisterable;
 import de.janxcode.wynngather.utils.DelayedTaskFrames;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
@@ -51,11 +52,15 @@ public class WynnGather {
         ClientCommandHandler.instance.registerCommand(new ModCommand());
     }
 
-    private static final GlobalNodeRegistry nodeRegistry = GlobalNodeRegistry.getInstance();
+    private static final ArmorStandNodeRegistry nodeRegistry = new ArmorStandNodeRegistry();
+
+    public static IGlobalNodeRegistry getGlobalNodeRegistry() {
+        return nodeRegistry;
+    }
     private boolean modInitialized = false;
 
     // this needs to go when features are implemented
-    private final List<IEventBusRegisterable> registerables = new ArrayList<>();
+    private final List<IRegisterable> registerables = new ArrayList<>();
 
     private void toggle() {
         if (modInitialized) stopMod();
@@ -69,7 +74,7 @@ public class WynnGather {
         registerables.add(new DrawNodeInfo());// todo: use events instead
         registerables.add(new DrawInfoPanel());
 
-        for (IEventBusRegisterable registerable : registerables) {
+        for (IRegisterable registerable : registerables) {
             registerable.register();
         }
         modInitialized = true;
@@ -77,7 +82,7 @@ public class WynnGather {
 
     private void stopMod() {
         assert modInitialized;
-        for (IEventBusRegisterable registerable : registerables) {
+        for (IRegisterable registerable : registerables) {
             registerable.unregister();
         }
         registerables.clear();

@@ -1,7 +1,7 @@
-package de.janxcode.wynngather.inforenderer;
+package de.janxcode.wynngather.core;
 
 public class NodeType {
-    public static String[] nodeTypes = {
+    public static final String[] nodeTypes = {
             //Mining
             "Copper",
             "Granite",
