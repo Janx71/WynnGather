@@ -1,9 +1,9 @@
 package de.janxcode.wynngather.inforenderer;
 
 import de.janxcode.wynngather.handlers.GatherNode;
+import de.janxcode.wynngather.handlers.GlobalNodeRegistry;
 import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
-import de.janxcode.wynngather.interfaces.IGatherNode;
-import de.janxcode.wynngather.interfaces.INodeRegister;
+import de.janxcode.wynngather.interfaces.INodeRegistry;
 import de.janxcode.wynngather.utils.HorizontalPos;
 import de.janxcode.wynngather.utils.ModConfig;
 import de.janxcode.wynngather.utils.RenderUtils;
@@ -23,11 +23,7 @@ import java.awt.*;
 public class DrawNodeInfo implements IEventBusRegisterable {
     private final Minecraft mc = Minecraft.getMinecraft();
 
-    private final INodeRegister nodeRegister;
-
-    public DrawNodeInfo(INodeRegister nodeRegister) {
-        this.nodeRegister = nodeRegister;
-    }
+    private final INodeRegistry nodeRegister = GlobalNodeRegistry.getInstance();
 
     private final static Color FAR = new Color(44, 94, 26);
     private final static Color CLOSE = new Color(139, 0, 0);

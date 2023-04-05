@@ -2,7 +2,7 @@ package de.janxcode.wynngather;
 
 import de.janxcode.wynngather.gui.InfoLineGui;
 import de.janxcode.wynngather.gui.ModMenuGui;
-import de.janxcode.wynngather.handlers.ArmorStandNodeRegister;
+import de.janxcode.wynngather.handlers.GlobalNodeRegistry;
 import de.janxcode.wynngather.inforenderer.DrawInfoPanel;
 import de.janxcode.wynngather.inforenderer.DrawNodeInfo;
 import de.janxcode.wynngather.interfaces.IEventBusRegisterable;
@@ -51,6 +51,7 @@ public class WynnGather {
         ClientCommandHandler.instance.registerCommand(new ModCommand());
     }
 
+    private static final GlobalNodeRegistry nodeRegistry = GlobalNodeRegistry.getInstance();
     private boolean modInitialized = false;
 
     // this needs to go when features are implemented
@@ -64,9 +65,8 @@ public class WynnGather {
     private void initializeMod() {
         assert !modInitialized;
 
-        ArmorStandNodeRegister nodeRegister = new ArmorStandNodeRegister();
-        registerables.add(nodeRegister);
-        registerables.add(new DrawNodeInfo(nodeRegister));// todo: use events instead
+        registerables.add(nodeRegistry);
+        registerables.add(new DrawNodeInfo());// todo: use events instead
         registerables.add(new DrawInfoPanel());
 
         for (IEventBusRegisterable registerable : registerables) {

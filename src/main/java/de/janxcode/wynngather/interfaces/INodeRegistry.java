@@ -4,7 +4,7 @@ import de.janxcode.wynngather.handlers.GatherNode;
 
 import java.util.List;
 
-public interface INodeRegister {
+public interface INodeRegistry {
     List<GatherNode> getNodes();
 }
 
