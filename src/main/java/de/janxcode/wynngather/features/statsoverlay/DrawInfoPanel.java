@@ -8,7 +8,6 @@ import de.janxcode.wynngather.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
@@ -16,7 +15,6 @@ import java.util.Arrays;
 
 public class DrawInfoPanel implements IRegisterable {
     // todo: this should be a non-singleton class called GatherStatsOverlay or similar
-    private String[] infoLinePatterns;
     Minecraft mc = Minecraft.getMinecraft();
     // todo: handle null case by not rendering anything depending on the current session
     //   for example, gathering progress should work without a session, while xp/h should not
@@ -32,29 +30,13 @@ public class DrawInfoPanel implements IRegisterable {
         this.latestNodeProgress = e.node.getMiningProgress();
     }
 
-    @Override
-    public void register() {
-        updatePatterns();
-        IRegisterable.super.register();
-    }
-
-    public void updatePatterns() {
-        infoLinePatterns = ModConfig.infoLines;
-    }
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text e) {
 
         if (WynnGather.GUI) return;
 
-        RenderUtils.drawLayeredString(Arrays.stream(infoLinePatterns).map(this::getOutputLine), ModConfig.guiPosX, ModConfig.guiPosY, Color.WHITE.getRGB(), mc.fontRenderer);
-    }
-
-    @SubscribeEvent
-    public void onConfigChange(ConfigChangedEvent.PostConfigChangedEvent e) {
-        if (e.getModID().equals(WynnGather.MODID)) {
-            updatePatterns();
-        }
+        RenderUtils.drawLayeredString(Arrays.stream(ModConfig.infoLines).map(this::getOutputLine), ModConfig.guiPosX, ModConfig.guiPosY, Color.WHITE.getRGB(), mc.fontRenderer);
     }
 
     private String getOutputLine(String line) { // todo: refactor
@@ -100,7 +82,7 @@ public class DrawInfoPanel implements IRegisterable {
 
             case "durability":
                 String toolDurability = currentSession.getToolDurability();
-                if(toolDurability == null) return "";
+                if (toolDurability == null) return "";
                 return toolDurability;
         }
 
