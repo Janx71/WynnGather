@@ -16,7 +16,7 @@ public class GatheringSession implements IRegisterable {
     private String gatheringType = "" + TextFormatting.RED + TextFormatting.BOLD + "Not Set";  // todo: initialize to null, move default value to GUI class
 
     public void start() {
-        sessionStart = System.currentTimeMillis();
+        sessionStart = System.currentTimeMillis(); // todo: use Instant API
     }
 
     @SubscribeEvent
