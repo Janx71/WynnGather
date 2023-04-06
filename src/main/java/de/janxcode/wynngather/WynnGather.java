@@ -1,5 +1,7 @@
 package de.janxcode.wynngather;
 
+import de.janxcode.wynngather.core.interfaces.IFeature;
+import de.janxcode.wynngather.features.nodeblockoverlay.NodeBlockOverlayFeature;
 import de.janxcode.wynngather.features.statsoverlay.InfoLineGui;
 import de.janxcode.wynngather.core.ModMenuGui;
 import de.janxcode.wynngather.core.ArmorStandNodeRegistry;
@@ -7,6 +9,7 @@ import de.janxcode.wynngather.features.statsoverlay.DrawInfoPanel;
 import de.janxcode.wynngather.features.nodeblockoverlay.DrawNodeInfo;
 import de.janxcode.wynngather.core.interfaces.IGlobalNodeRegistry;
 import de.janxcode.wynngather.core.interfaces.IRegisterable;
+import de.janxcode.wynngather.features.statsoverlay.StatsIngameOverlayFeature;
 import de.janxcode.wynngather.utils.DelayedTaskFrames;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
@@ -50,6 +53,7 @@ public class WynnGather {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         ClientCommandHandler.instance.registerCommand(new ModCommand());
+        nodeRegistry.register();
     }
 
     private static final ArmorStandNodeRegistry nodeRegistry = new ArmorStandNodeRegistry();
@@ -57,36 +61,31 @@ public class WynnGather {
     public static IGlobalNodeRegistry getGlobalNodeRegistry() {
         return nodeRegistry;
     }
-    private boolean modInitialized = false;
 
-    // this needs to go when features are implemented
-    private final List<IRegisterable> registerables = new ArrayList<>();
-
+    private boolean modActive = false;
+    private final IFeature[] features = {
+            new NodeBlockOverlayFeature(),
+            new StatsIngameOverlayFeature()
+    };
     private void toggle() {
-        if (modInitialized) stopMod();
-        else initializeMod();
+        if (modActive) stopMod();
+        else startMod();
     }
 
-    private void initializeMod() {
-        assert !modInitialized;
-
-        registerables.add(nodeRegistry);
-        registerables.add(new DrawNodeInfo());// todo: use events instead
-        registerables.add(new DrawInfoPanel());
-
-        for (IRegisterable registerable : registerables) {
-            registerable.register();
+    private void startMod() {  // todo: allow features to be enabled/disabled individually
+        assert !modActive;
+        for (IFeature f : features) {
+            f.activate();
         }
-        modInitialized = true;
+        modActive = true;
     }
 
     private void stopMod() {
-        assert modInitialized;
-        for (IRegisterable registerable : registerables) {
-            registerable.unregister();
+        assert modActive;
+        for (IFeature f : features) {
+            f.deactivate();
         }
-        registerables.clear();
-        modInitialized = false;
+        modActive = false;
     }
 
     // this would be much cleaner with an object declaration in Kotlin
@@ -118,12 +117,12 @@ public class WynnGather {
 
             switch (args[0]) {
                 case "start":
-                    if (modInitialized) throw new CommandException(MOD_ALREADY_ACTIVE);
-                    initializeMod();
+                    if (modActive) throw new CommandException(MOD_ALREADY_ACTIVE);
+                    startMod();
                     break;
 
                 case "stop":
-                    if (!modInitialized) throw new CommandException(MOD_NOT_ACTIVE);
+                    if (!modActive) throw new CommandException(MOD_NOT_ACTIVE);
                     stopMod();
                     break;
 

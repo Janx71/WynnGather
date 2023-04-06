@@ -1,12 +1,13 @@
 package de.janxcode.wynngather.features.statsoverlay;
 
 import de.janxcode.wynngather.core.NodeProgressUpdatedEvent;
+import de.janxcode.wynngather.core.interfaces.IRegisterable;
 import de.janxcode.wynngather.utils.Utils;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class StatsHelper {  // this class has too many responsibilities
+public class StatsHelper implements IRegisterable {
     // todo:
     //  - Better name
     //  - Just make new instances instead of resetting a singleton
@@ -16,24 +17,19 @@ public class StatsHelper {  // this class has too many responsibilities
     private int nodesMined;
     private int nextLevel;
     private String type;  // type of what?
-    private String progress; // progress of what?
 
     public void reset() {
-        startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();  // todo: find a better way to handle time
         xp = 0;
         nodesMined = 0;
         nextLevel = 0;
         type = "" + TextFormatting.RED + TextFormatting.BOLD + "Not Set";
-        progress = "";
     }
 
+    @Override
     public void register() {
         reset();
-        MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    public void unregister() {
-        MinecraftForge.EVENT_BUS.unregister(this);
+        IRegisterable.super.register();
     }
 
     @SubscribeEvent
