@@ -18,24 +18,24 @@ public class DrawInfoPanel implements IRegisterable {
     // todo: this should be a non-singleton class called GatherStatsOverlay or similar
     private String[] infoLinePatterns;
     Minecraft mc = Minecraft.getMinecraft();
-    private final StatsHelper stats = new StatsHelper();
-
+    // todo: handle null case by not rendering anything depending on the current session
+    //   for example, gathering progress should work without a session, while xp/h should not
+    private GatheringSession currentSession = null;
     private String latestNodeProgress = "";
+
+    public void setDisplayedSession(GatheringSession session) { // todo: interface
+        currentSession = session;
+    }
 
     @SubscribeEvent
     public void onNodeUpdate(NodeProgressUpdatedEvent e) {
         this.latestNodeProgress = e.node.getMiningProgress();
     }
 
+    @Override
     public void register() {
-        stats.register();
         updatePatterns();
         IRegisterable.super.register();
-    }
-
-    public void unregister() {
-        stats.unregister();
-        IRegisterable.super.unregister();
     }
 
     public void updatePatterns() {
@@ -78,22 +78,22 @@ public class DrawInfoPanel implements IRegisterable {
         // todo: refactor with enum
         switch (v) {
             case "nodesMined":
-                return String.valueOf(stats.getNodesMined());
+                return String.valueOf(currentSession.getNodesMined());
 
             case "nodesPerMinute":
-                return String.valueOf(stats.getNodesPerMinute());
+                return String.valueOf(currentSession.getNodesPerMinute());
 
             case "xpPerHour":
-                return String.valueOf(stats.getXpPerHour());
+                return String.valueOf(currentSession.getXpPerHour());
 
             case "nextLevel":
-                return String.valueOf(stats.getNextLevel());
+                return String.valueOf(currentSession.getNextLevel());
 
             case "type":
-                return stats.getType();
+                return currentSession.getType();
 
             case "time":
-                return stats.getTime();
+                return currentSession.getTime();
 
             case "progress":
                 return latestNodeProgress;

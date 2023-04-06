@@ -8,6 +8,10 @@ public class StatsIngameOverlayFeature implements IFeature {
     @Override
     public void activate() {
         statsOverlay = new DrawInfoPanel();
+        GatheringSession session = new GatheringSession();  // todo: allow creation of session to be done more dynamically
+        session.start();
+        session.register();
+        statsOverlay.setDisplayedSession(session);
         statsOverlay.register();
     }
 

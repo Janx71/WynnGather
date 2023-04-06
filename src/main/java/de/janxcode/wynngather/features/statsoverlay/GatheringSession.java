@@ -4,32 +4,19 @@ import de.janxcode.wynngather.core.NodeProgressUpdatedEvent;
 import de.janxcode.wynngather.core.interfaces.IRegisterable;
 import de.janxcode.wynngather.utils.Utils;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class StatsHelper implements IRegisterable {
+public class GatheringSession implements IRegisterable {
     // todo:
-    //  - Better name
-    //  - Just make new instances instead of resetting a singleton
-    //    - This would eliminate the uninitialized fields and the need to register locally
-    private int xp;
-    private long startTime;  // todo: more control over how and when time resets
-    private int nodesMined;
-    private int nextLevel;
-    private String type;  // type of what?
+    //  - extract parts of this class that are not bound to the current gathering session (artifacts from Info(Helper) class)
+    private int xp = 0;
+    private long sessionStart = -1;
+    private int nodesMined = 0;
+    private int nextLevel = 0;
+    private String gatheringType = "" + TextFormatting.RED + TextFormatting.BOLD + "Not Set";  // todo: initialize to null, move default value to GUI class
 
-    public void reset() {
-        startTime = System.currentTimeMillis();  // todo: find a better way to handle time
-        xp = 0;
-        nodesMined = 0;
-        nextLevel = 0;
-        type = "" + TextFormatting.RED + TextFormatting.BOLD + "Not Set";
-    }
-
-    @Override
-    public void register() {
-        reset();
-        IRegisterable.super.register();
+    public void start() {
+        sessionStart = System.currentTimeMillis();
     }
 
     @SubscribeEvent
@@ -37,7 +24,7 @@ public class StatsHelper implements IRegisterable {
         nodesMined++;
         nextLevel = e.next;
         xp += e.xp;
-        type = e.node.getType();
+        gatheringType = e.node.getType();
     }
 
 
@@ -45,9 +32,8 @@ public class StatsHelper implements IRegisterable {
         return nodesMined;
     }
 
-
     public String getType() {
-        return type;
+        return gatheringType;
     }
 
     public int getNextLevel() {
@@ -56,13 +42,13 @@ public class StatsHelper implements IRegisterable {
 
 
     public String getTime() { // todo: use Duration API
-        long seconds = (System.currentTimeMillis() - startTime) / 1000;
+        long seconds = (System.currentTimeMillis() - sessionStart) / 1000;
 
         return String.format("%02d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
     }
 
     public int getNodesPerMinute() { // todo: use Duration API
-        long seconds = (System.currentTimeMillis() - startTime) / 1000;
+        long seconds = (System.currentTimeMillis() - sessionStart) / 1000;
 
         if (seconds / 60d > 0) {
             return (int) (nodesMined / (seconds / 60d));
@@ -72,7 +58,7 @@ public class StatsHelper implements IRegisterable {
     }
 
     public String getXpPerHour() { // todo: use Duration API
-        long seconds = (System.currentTimeMillis() - startTime) / 1000;
+        long seconds = (System.currentTimeMillis() - sessionStart) / 1000;
         if (seconds / 3600d > 0) {
             return Utils.formatValue((long) (xp / (seconds / 3600d)));
         }
