@@ -98,6 +98,10 @@ public class DrawInfoPanel implements IRegisterable {
             case "progress":
                 return latestNodeProgress;
 
+            case "durability":
+                String toolDurability = currentSession.getToolDurability();
+                if(toolDurability == null) return "";
+                return toolDurability;
         }
 
         for (TextFormatting value : TextFormatting.values()) {
