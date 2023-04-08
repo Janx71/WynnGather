@@ -1,6 +1,6 @@
 package de.janxcode.wynngather;
 
-import de.janxcode.wynngather.core.interfaces.IFeature;
+import de.janxcode.wynngather.features.IFeature;
 import de.janxcode.wynngather.features.nodeblockoverlay.NodeBlockOverlayFeature;
 import de.janxcode.wynngather.features.statsoverlay.StatsOverlayConfigGui;
 import de.janxcode.wynngather.core.ModMenuGui;
@@ -61,6 +61,7 @@ public class WynnGather {
             new NodeBlockOverlayFeature(),
             new StatsOverlayFeature()
     };
+
     private void toggle() {
         if (modActive) stopMod();
         else startMod();

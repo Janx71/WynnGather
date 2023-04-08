@@ -4,12 +4,15 @@ import de.janxcode.wynngather.WynnGather;
 import de.janxcode.wynngather.core.GatheringSession;
 import de.janxcode.wynngather.core.NodeProgressUpdatedEvent;
 import de.janxcode.wynngather.core.interfaces.IRegisterable;
+import de.janxcode.wynngather.utils.ItemUtils;
 import de.janxcode.wynngather.utils.ModConfig;
 import de.janxcode.wynngather.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -20,7 +23,7 @@ public class StatsOverlayIngameGui implements IRegisterable {
     // todo: handle null case by not rendering anything depending on the current session
     //   for example, gathering progress should work without a session, while xp/h should not
     private GatheringSession currentSession = null;
-    private String latestNodeProgress = "";
+    private String latestNodeProgress = ""; // todo: move to registry
 
     public void setDisplayedSession(GatheringSession session) { // todo: interface
         currentSession = session;
@@ -86,9 +89,8 @@ public class StatsOverlayIngameGui implements IRegisterable {
                 return latestNodeProgress;
 
             case "durability":
-                String toolDurability = currentSession.getToolDurability();
-                if (toolDurability == null) return "";
-                return toolDurability;
+                if (heldToolDurability == null) return "N/A";
+                return heldToolDurability;
         }
 
         for (TextFormatting value : TextFormatting.values()) {
@@ -104,12 +106,30 @@ public class StatsOverlayIngameGui implements IRegisterable {
 
         return "{" + v + "}";
     }
-//    private int xp = 0;
-//    private long startTime = System.currentTimeMillis();  // todo: more control over how and when time resets
-//    private int nodesMined = 0;
-//    private int nextLevel = 0;
-//    private String type = "" + TextFormatting.RED + TextFormatting.BOLD + "Not Set";  // type of what?
-//    private String progress = ""; // progress of what?
 
 
+    // todo: move to registry
+    private String heldToolDurability = null;  // "current/max" if tool in hand, null otherwise
+    private ItemStack lastHeldItem = ItemStack.EMPTY;
+
+    @SubscribeEvent
+    public void onClientTickEnd(TickEvent.ClientTickEvent e) {
+        if (e.phase != TickEvent.Phase.END) return;
+        if (mc.player == null) {
+            lastHeldItem = ItemStack.EMPTY;
+            return;
+        }
+
+        ItemStack heldItem = mc.player.getHeldItemMainhand();
+
+        if (!ItemStack.areItemStacksEqual(lastHeldItem, heldItem)) {
+            lastHeldItem = heldItem.copy();
+            heldToolDurability = ItemUtils.getGatherToolDurability(lastHeldItem);
+        }
+    }
+
+    public void sync() {
+        lastHeldItem = mc.player.getHeldItemMainhand();
+        heldToolDurability = ItemUtils.getGatherToolDurability(lastHeldItem);
+    }
 }

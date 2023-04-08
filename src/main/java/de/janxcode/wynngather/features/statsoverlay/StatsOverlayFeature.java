@@ -1,7 +1,7 @@
 package de.janxcode.wynngather.features.statsoverlay;
 
 import de.janxcode.wynngather.core.GatheringSession;
-import de.janxcode.wynngather.core.interfaces.IFeature;
+import de.janxcode.wynngather.features.IFeature;
 
 public class StatsOverlayFeature implements IFeature {
     StatsOverlayIngameGui statsOverlay = null;
@@ -14,6 +14,7 @@ public class StatsOverlayFeature implements IFeature {
         session.start();
         session.register();
         statsOverlay.setDisplayedSession(session);
+        statsOverlay.sync();
         statsOverlay.register();
     }
 

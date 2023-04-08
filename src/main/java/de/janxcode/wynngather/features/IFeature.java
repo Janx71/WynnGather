@@ -1,4 +1,4 @@
-package de.janxcode.wynngather.core.interfaces;
+package de.janxcode.wynngather.features;
 
 public interface IFeature {
     void activate();
