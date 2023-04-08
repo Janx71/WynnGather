@@ -64,7 +64,7 @@ public class ArmorStandNodeRegistry implements IGlobalNodeRegistry, IRegisterabl
         }
     }
 
-    private boolean isMaterial(String name) {
+    private boolean isMaterial(String name) {  // move to NodeType
         return Arrays.stream(NodeType.nodeTypes).anyMatch(nodeType -> nodeType.equalsIgnoreCase(name));
     }
 

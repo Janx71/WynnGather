@@ -1,6 +1,6 @@
 package de.janxcode.wynngather.core;
 
-public class NodeType {
+public class NodeType {  // todo: use an enum for NodeTypes instead, this is literally already the basis for one
     public static final String[] nodeTypes = {
             //Mining
             "Copper",

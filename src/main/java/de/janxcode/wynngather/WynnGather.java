@@ -2,14 +2,11 @@ package de.janxcode.wynngather;
 
 import de.janxcode.wynngather.core.interfaces.IFeature;
 import de.janxcode.wynngather.features.nodeblockoverlay.NodeBlockOverlayFeature;
-import de.janxcode.wynngather.features.statsoverlay.InfoLineGui;
+import de.janxcode.wynngather.features.statsoverlay.StatsOverlayConfigGui;
 import de.janxcode.wynngather.core.ModMenuGui;
 import de.janxcode.wynngather.core.ArmorStandNodeRegistry;
-import de.janxcode.wynngather.features.statsoverlay.DrawInfoPanel;
-import de.janxcode.wynngather.features.nodeblockoverlay.DrawNodeInfo;
 import de.janxcode.wynngather.core.interfaces.IGlobalNodeRegistry;
-import de.janxcode.wynngather.core.interfaces.IRegisterable;
-import de.janxcode.wynngather.features.statsoverlay.StatsIngameOverlayFeature;
+import de.janxcode.wynngather.features.statsoverlay.StatsOverlayFeature;
 import de.janxcode.wynngather.utils.DelayedTaskFrames;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
@@ -23,9 +20,6 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
 
 // todo:
 //  - The gathering stats overlay and node boxes are seperate features, they should be fully seperated
@@ -65,7 +59,7 @@ public class WynnGather {
     private boolean modActive = false;
     private final IFeature[] features = {
             new NodeBlockOverlayFeature(),
-            new StatsIngameOverlayFeature()
+            new StatsOverlayFeature()
     };
     private void toggle() {
         if (modActive) stopMod();
@@ -131,7 +125,7 @@ public class WynnGather {
                     break;
 
                 case "menu":
-                    new DelayedTaskFrames((() -> Minecraft.getMinecraft().displayGuiScreen(new InfoLineGui())), 1);
+                    new DelayedTaskFrames((() -> Minecraft.getMinecraft().displayGuiScreen(new StatsOverlayConfigGui())), 1);
                     break;
 
                 default:

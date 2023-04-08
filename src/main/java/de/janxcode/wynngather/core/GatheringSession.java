@@ -1,4 +1,4 @@
-package de.janxcode.wynngather.features.statsoverlay;
+package de.janxcode.wynngather.core;
 
 import de.janxcode.wynngather.WynnGather;
 import de.janxcode.wynngather.core.NodeProgressUpdatedEvent;
@@ -24,7 +24,7 @@ public class GatheringSession implements IRegisterable {
     private int nodesMined = 0;
     private int nextLevel = 0;
     private String toolDurability = null;
-    private String gatheringType = String.valueOf(TextFormatting.RED) + TextFormatting.BOLD + "Not Set";  // todo: initialize to null, move default value to GUI class
+    private String gatheringType = null;  // todo: initialize to null, move default value to GUI class
     private static final Minecraft mc = Minecraft.getMinecraft();
 
     public void start() {

@@ -1,6 +1,7 @@
 package de.janxcode.wynngather.features.statsoverlay;
 
 import de.janxcode.wynngather.WynnGather;
+import de.janxcode.wynngather.core.GatheringSession;
 import de.janxcode.wynngather.core.NodeProgressUpdatedEvent;
 import de.janxcode.wynngather.core.interfaces.IRegisterable;
 import de.janxcode.wynngather.utils.ModConfig;
@@ -13,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.awt.*;
 import java.util.Arrays;
 
-public class DrawInfoPanel implements IRegisterable {
+public class StatsOverlayIngameGui implements IRegisterable {
     // todo: this should be a non-singleton class called GatherStatsOverlay or similar
     Minecraft mc = Minecraft.getMinecraft();
     // todo: handle null case by not rendering anything depending on the current session
@@ -56,6 +57,8 @@ public class DrawInfoPanel implements IRegisterable {
         return output.toString();
     }
 
+    static final String GATHER_TYPE_NOT_SET = String.valueOf(TextFormatting.RED) + TextFormatting.BOLD + "Not Set";
+
     private String getStatsValue(String v) {
         // todo: refactor with enum
         switch (v) {
@@ -72,7 +75,9 @@ public class DrawInfoPanel implements IRegisterable {
                 return String.valueOf(currentSession.getNextLevel());
 
             case "type":
-                return currentSession.getType();
+                String type = currentSession.getType();
+                if (type == null) return GATHER_TYPE_NOT_SET;
+                return type;
 
             case "time":
                 return currentSession.getTime();

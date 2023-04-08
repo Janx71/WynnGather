@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class InfoLineGui extends GuiScreen {
+public class StatsOverlayConfigGui extends GuiScreen {
     private final Minecraft mc = Minecraft.getMinecraft();
     private final List<GuiTextField> textFields = new LinkedList<>();
 
