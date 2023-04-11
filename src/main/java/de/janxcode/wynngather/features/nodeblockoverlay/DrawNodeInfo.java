@@ -51,12 +51,15 @@ public class DrawNodeInfo implements IRegisterable {
             //Includes regeneration percentage if not fully regenerated
             String text = TextFormatting.BOLD + node.getType();
             if (node.isMined()) text = text + " [" + (int) (ratio * 100) + "%]";
-            RenderUtils.draw3DString(pos.up().down(yOffset), text, color, e.getPartialTicks());
 
             //Represents mining progress 2 blocks above node if mining
-            if (node.getMiningProgress() != null) {
-                RenderUtils.draw3DString(pos.up(2).down(yOffset), node.getMiningProgress(), color, e.getPartialTicks());
+            if (node.getMiningProgress() != null && !node.getMiningProgress().equals("")) {
+                RenderUtils.draw3DString(pos.getX(), pos.up().down(yOffset).getY(), pos.getZ(), node.getMiningProgress(), color, e.getPartialTicks());
+                RenderUtils.draw3DString(pos.getX(), pos.up().down(yOffset).getY() + 0.3, pos.getZ(), text, color, e.getPartialTicks());
+                continue;
             }
+
+            RenderUtils.draw3DString(pos.getX(), pos.up().down(yOffset).getY(), pos.getZ(), text, color, e.getPartialTicks());
         }
     }
 

@@ -18,12 +18,12 @@ import java.util.stream.Stream;
 
 //Got some of this code from a forum of that I forgot the name. Sure do hope it's not licensed xD
 public class RenderUtils {
-    public static void draw3DString(BlockPos pos, String text, int colour, float partialTicks) {
+    public static void draw3DString(double xPos, double yPos, double zPos, String text, int colour, float partialTicks) {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.player;
-        double x = (pos.getX() + 0.5 - player.lastTickPosX) + ((pos.getX() - player.posX + 0.5) - (pos.getX() - player.lastTickPosX + 0.5)) * partialTicks;
-        double y = (pos.getY() + 0.5 - player.lastTickPosY) + ((pos.getY() - player.posY + 0.5) - (pos.getY() - player.lastTickPosY + 0.5)) * partialTicks;
-        double z = (pos.getZ() + 0.5 - player.lastTickPosZ) + ((pos.getZ() - player.posZ + 0.5) - (pos.getZ() - player.lastTickPosZ + 0.5)) * partialTicks;
+        double x = (xPos + 0.5 - player.lastTickPosX) + ((xPos - player.posX + 0.5) - (xPos - player.lastTickPosX + 0.5)) * partialTicks;
+        double y = (yPos + 0.5 - player.lastTickPosY) + ((yPos - player.posY + 0.5) - (yPos - player.lastTickPosY + 0.5)) * partialTicks;
+        double z = (zPos + 0.5 - player.lastTickPosZ) + ((zPos - player.posZ + 0.5) - (zPos - player.lastTickPosZ + 0.5)) * partialTicks;
         RenderManager renderManager = mc.getRenderManager();
 
         float f = 1.6F;
