@@ -2,7 +2,7 @@ package de.janxcode.wynngather.features.nodeblockoverlay;
 
 import de.janxcode.wynngather.WynnGather;
 import de.janxcode.wynngather.core.GatherNode;
-import de.janxcode.wynngather.core.interfaces.IRegisterable;
+import de.janxcode.wynngather.core.interfaces.IRegistrable;
 import de.janxcode.wynngather.core.interfaces.IGlobalNodeRegistry;
 import de.janxcode.wynngather.utils.HorizontalPos;
 import de.janxcode.wynngather.utils.ModConfig;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 
-public class DrawNodeInfo implements IRegisterable {
+public class DrawNodeInfo implements IRegistrable {
     private final Minecraft mc = Minecraft.getMinecraft();
 
     private final IGlobalNodeRegistry nodeRegister = WynnGather.getGlobalNodeRegistry();
@@ -50,7 +50,7 @@ public class DrawNodeInfo implements IRegisterable {
             //Draws material name one block above the current node
             //Includes regeneration percentage if not fully regenerated
             String text = TextFormatting.BOLD + node.getType();
-            if (node.isMined()) text = text + " [" + (int) (ratio * 100) + "%]";
+            if (node.isMined()) text += " [" + (int) (ratio * 100) + "%]";
 
             //Represents mining progress 2 blocks above node if mining
             if (node.getMiningProgress() != null && !node.getMiningProgress().equals("")) {

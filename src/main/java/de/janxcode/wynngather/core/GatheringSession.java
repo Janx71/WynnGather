@@ -1,11 +1,11 @@
 package de.janxcode.wynngather.core;
 
-import de.janxcode.wynngather.core.interfaces.IRegisterable;
+import de.janxcode.wynngather.core.interfaces.IRegistrable;
 import de.janxcode.wynngather.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class GatheringSession implements IRegisterable {
+public class GatheringSession implements IRegistrable {
     // todo:
     //  - extract parts of this class that are not bound to the current gathering session (artifacts from Info(Helper) class)
     private static final Minecraft mc = Minecraft.getMinecraft();

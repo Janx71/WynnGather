@@ -1,6 +1,6 @@
 package de.janxcode.wynngather.core;
 
-import de.janxcode.wynngather.core.interfaces.IRegisterable;
+import de.janxcode.wynngather.core.interfaces.IRegistrable;
 import de.janxcode.wynngather.core.interfaces.IGlobalNodeRegistry;
 import de.janxcode.wynngather.utils.HorizontalPos;
 import de.janxcode.wynngather.utils.Utils;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ArmorStandNodeRegistry implements IGlobalNodeRegistry, IRegisterable {
+public class ArmorStandNodeRegistry implements IGlobalNodeRegistry, IRegistrable {
     private final Minecraft mc = Minecraft.getMinecraft();
     private final List<GatherNode> nodes = new ArrayList<>();
     private int mineTicks = 0;

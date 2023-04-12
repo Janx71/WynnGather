@@ -3,7 +3,7 @@ package de.janxcode.wynngather.features.statsoverlay;
 import de.janxcode.wynngather.WynnGather;
 import de.janxcode.wynngather.core.GatheringSession;
 import de.janxcode.wynngather.core.NodeProgressUpdatedEvent;
-import de.janxcode.wynngather.core.interfaces.IRegisterable;
+import de.janxcode.wynngather.core.interfaces.IRegistrable;
 import de.janxcode.wynngather.utils.ItemUtils;
 import de.janxcode.wynngather.utils.ModConfig;
 import de.janxcode.wynngather.utils.RenderUtils;
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.awt.*;
 import java.util.Arrays;
 
-public class StatsOverlayIngameGui implements IRegisterable {
+public class StatsOverlayIngameGui implements IRegistrable {
     // todo: this should be a non-singleton class called GatherStatsOverlay or similar
     Minecraft mc = Minecraft.getMinecraft();
     // todo: handle null case by not rendering anything depending on the current session
